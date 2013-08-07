@@ -37,19 +37,15 @@ public class AppTest
         Vertex head = new Vertex("s");
         Vertex tail = new Vertex("t");
 
-        Edge edge = new Edge(head,tail, 3);
+        Edge edge = new Edge(head, 3);
 
-        g.addEdge(edge);
-
-        List<Edge> headEdgs = g.getEdges(head);
-        List<Edge> tailEdges = g.getEdges(tail);
+        g.addEdge(tail,edge);
 
 
-
-        assertEquals(1, headEdgs.size());
-        assertEquals(1, tailEdges.size());
-        assertTrue(headEdgs.contains(edge));
-        assertFalse(tailEdges.contains(new Edge(head,tail,3)));
+        assertEquals(1, g.getVertex("s").getEdges().size());
+        assertEquals(1, g.getVertex("t").getEdges().size());
+        assertTrue(g.getVertex("s").getEdges().contains(edge));
+        assertFalse(g.getVertex("t").getEdges().contains(new Edge(tail,3)));
     }
 
     /**
@@ -63,14 +59,54 @@ public class AppTest
 
     public void testShortestPath1() {
         Graph g = new Graph();
-        g.addEdge( new Edge( new Vertex("1"), new Vertex("2"), 3));
-        g.addEdge( new Edge( new Vertex("1"), new Vertex("3"), 3));
-        g.addEdge( new Edge( new Vertex("2"), new Vertex("3"), 1));
-        g.addEdge( new Edge( new Vertex("2"), new Vertex("4"), 2));
-        g.addEdge( new Edge( new Vertex("3"), new Vertex("4"), 50));
+
+        Vertex one =  new Vertex("1");
+        Vertex two =  new Vertex("2");
+        Vertex three =  new Vertex("3");
+        Vertex four =  new Vertex("4");
+
+        g.addEdge( one, new Edge( two, 3));
+        g.addEdge( one, new Edge( three, 3));
+        g.addEdge( two, new Edge( three, 1));
+        g.addEdge( two, new Edge( four, 2));
+        g.addEdge( three, new Edge( four, 50));
 
         g.caculateShortestPath(new Vertex("1"));
 
+        assertEquals(0, g.getVertex("1").distance);
+        assertEquals(3, g.getVertex("2").distance);
+        assertEquals(3, g.getVertex("3").distance);
+        assertEquals(5, g.getVertex("4").distance);
+    }
 
+    /*
+        1 2,8 3,15
+        2 1,7 3,4 4,5
+        3 1,12
+        4 3,5
+     */
+
+    public void testShortestPath2() {
+        Graph g = new Graph();
+
+        Vertex one =  new Vertex("1");
+        Vertex two =  new Vertex("2");
+        Vertex three =  new Vertex("3");
+        Vertex four =  new Vertex("4");
+
+        g.addEdge( one, new Edge( two, 8));
+        g.addEdge( one, new Edge( three, 15));
+        g.addEdge( two, new Edge( one, 7));
+        g.addEdge( two, new Edge( three, 4));
+        g.addEdge( two, new Edge( four, 5));
+        g.addEdge( three, new Edge( one, 12));
+        g.addEdge( four , new Edge( three, 5));
+
+        g.caculateShortestPath(one);
+
+        assertEquals(0, g.getVertex("1").distance);
+        assertEquals(8, g.getVertex("2").distance);
+        assertEquals(12, g.getVertex("3").distance);
+        assertEquals(13, g.getVertex("4").distance);
     }
 }

@@ -1,5 +1,6 @@
 package com.algorithm;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -14,10 +15,22 @@ public class Vertex {
 
     public Vertex(String label) {
         this.label = label;
+        edges = new ArrayList<Edge>();
     }
 
     public int distance;
     public Vertex parent;
+
+    private List<Edge> edges;
+
+
+    public void addEdge(Edge e) {
+        edges.add(e);
+    }
+
+    public List<Edge> getEdges() {
+        return edges;
+    }
 
     @Override
     public boolean equals(Object o) {

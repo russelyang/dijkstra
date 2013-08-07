@@ -8,13 +8,11 @@ package com.algorithm;
  * To change this template use File | Settings | File Templates.
  */
 public class Edge {
-    public Vertex tail;
     public Vertex head;
 
     public int weight;
 
-    public Edge(Vertex tail, Vertex head, int weight) {
-        this.tail = tail;
+    public Edge(Vertex head, int weight) {
         this.head = head;
         this.weight = weight;
     }
